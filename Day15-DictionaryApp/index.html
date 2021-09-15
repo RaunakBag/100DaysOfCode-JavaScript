@@ -4,31 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+<!-- Google Fonts -->
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+    rel="stylesheet"
+/>
+<!-- Stylesheet -->
+<link rel="stylesheet" href="style.css" />
     <title>Dictionary</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Dictionary</h1>
-        <div class="input">
+  <audio id="sound"></audio>
+  <div class="container">
+      <div class="search-box">
           <input
-            class="search-field"
-            onkeypress="handle(event)"
-            type="text"
-            placeholder="Type and press enter"
+              type="text"
+              placeholder="Type the word here.."
+              id="inp-word"
           />
-        </div>
-        <div class="result">
-          <h1 id="word" class="word"></h1>
-          <p class="phonetics"></p>
-          <audio class="audio" controls></audio>
-          <p class="meaningheading">Meaning</p>
-          <p class="word-definition"></p>
-          <p class="meaningheading">Synonyms</p>
-          <div class="synonyms"></div>
-        </div>
+          <button id="search-btn">Search</button>
       </div>
-      <!-- script tag here -->
-    <script src="main.js"></script>
+      <div class="result" id="result"></div>
+  </div>
+  <!-- Script -->
+  <script src="main.js"></script>
 </body>
 </html>

@@ -1,34 +1,37 @@
-const resultDiv = document.querySelector(".result");
-const wordEle = document.querySelector("#word");
-const phonetics = document.querySelector(".phonetics");
-const audio = document.querySelector("audio");
-const wordMeaning = document.querySelector(".word-definition");
-const handle = async (e) => {
-  if (e.keyCode === 13) {
-    const word = e.target.value;
-    const result = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-    );
-    const data = await result.json();
-    resultDiv.style.display = "block";
-    if (result.ok) {
-      wordEle.innerText = data[0].word;
-      phonetics.innerText = data[0].phonetics[0].text;
-      audio.src = data[0].phonetics[0].audio;
-      wordMeaning.innerText = data[0].meanings[0].definitions[0].definition;
-      const synonyms = data[0].meanings[0].definitions[0].synonyms;
-      let synonymsData = "";
-      for (let i = 0; i < synonyms.length; i++) {
-        synonymsData += `<p class="pills">${synonyms[i]}<p>`;
-      }
-      document.querySelector(".synonyms").innerHTML = synonymsData;
-      return;
-    } else {
-      audio.style.display = "none";
-      document.querySelectorAll(".meaningheading")[0].style.display = "none";
-      document.querySelectorAll(".meaningheading")[1].style.display = "none";
-      wordEle.innerText = data.title;
-      wordMeaning.innerText = data.message;
-    }
-  }
-};
+const url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+const result = document.getElementById("result");
+const sound = document.getElementById("sound");
+const btn = document.getElementById("search-btn");
+
+btn.addEventListener("click", () => {
+    let inpWord = document.getElementById("inp-word").value;
+    fetch(`${url}${inpWord}`)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            result.innerHTML = `
+            <div class="word">
+                    <h3>${inpWord}</h3>
+                    <button onclick="playSound()">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+                <div class="details">
+                    <p>${data[0].meanings[0].partOfSpeech}</p>
+                    <p>/${data[0].phonetic}/</p>
+                </div>
+                <p class="word-meaning">
+                   ${data[0].meanings[0].definitions[0].definition}
+                </p>
+                <p class="word-example">
+                    ${data[0].meanings[0].definitions[0].example || ""}
+                </p>`;
+            sound.setAttribute("src", `https:${data[0].phonetics[0].audio}`);
+        })
+        .catch(() => {
+            result.innerHTML = `<h3 class="error">Couldn't Find The Word</h3>`;
+        });
+});
+function playSound() {
+    sound.play();
+}
